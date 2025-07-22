@@ -11,7 +11,7 @@ export default {
           city_id INT NOT NULL,
           created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
           updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-          PRIMARY KEY (company_id, city_id),
+          PRIMARY KEY (company_id, city_id)
         );
       `);
 
