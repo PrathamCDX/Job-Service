@@ -41,6 +41,11 @@ Job.init({
     employment_type_id: {
         type: DataTypes.INTEGER,
         allowNull: true,
+        references:{
+            model: EmploymentType,
+            key: 'id',
+        },
+        onDelete: 'CASCADE',
     },
     experience_level_id: {
         type: DataTypes.INTEGER,
@@ -61,6 +66,11 @@ Job.init({
     company_id: {
         type: DataTypes.INTEGER,
         allowNull: true,
+        references:{
+            model: Company,
+            key: 'id'
+        },
+        onDelete: 'CASCADE'
     },
     city_id: {
         type: DataTypes.INTEGER,
