@@ -1,10 +1,11 @@
-import { CreationOptional,  DataTypes,  InferAttributes, InferCreationAttributes, Model } from 'sequelize';
+import { CreationOptional,  DataTypes,  ForeignKey,  InferAttributes, InferCreationAttributes, Model } from 'sequelize';
 
+import JobTitle from './jobTitle.model';
 import sequelize from './sequelize';
 
 class Job extends Model<InferAttributes<Job>, InferCreationAttributes<Job>>{
     declare id: CreationOptional<number>;
-    declare title_id: CreationOptional<number>;
+    declare title_id: ForeignKey<JobTitle['id']>;
     declare employment_type_id: CreationOptional<number>;
     declare experience_level_id: CreationOptional<number>;
     declare salary_min: number;
@@ -29,6 +30,11 @@ Job.init({
     title_id: {
         type: DataTypes.INTEGER,
         allowNull: true,
+        references:{
+            model: JobTitle,
+            key: 'id',
+        },
+        onDelete: 'CASCADE'
     },
     employment_type_id: {
         type: DataTypes.INTEGER,
