@@ -2,6 +2,7 @@ import { CreationOptional,  DataTypes,  ForeignKey,  InferAttributes, InferCreat
 
 import Company from './company.model';
 import EmploymentType from './employmentType.model';
+import ExperienceLevel from './experienceLevel.model';
 import JobTitle from './jobTitle.model';
 import sequelize from './sequelize';
 
@@ -9,7 +10,7 @@ class Job extends Model<InferAttributes<Job>, InferCreationAttributes<Job>>{
     declare id: CreationOptional<number>;
     declare title_id: ForeignKey<JobTitle['id']>;
     declare employment_type_id: ForeignKey<EmploymentType['id']>;
-    declare experience_level_id: CreationOptional<number>;
+    declare experience_level_id: ForeignKey<ExperienceLevel['id']>;
     declare salary_min: number;
     declare salary_max: number;
     declare recuiter_id: CreationOptional<number>;
@@ -50,6 +51,11 @@ Job.init({
     experience_level_id: {
         type: DataTypes.INTEGER,
         allowNull: true,
+        references:{
+            model: ExperienceLevel,
+            key: 'id',
+        },
+        onDelete: 'CASCADE'
     },
     salary_min: {
         type: DataTypes.DECIMAL(10,2),
