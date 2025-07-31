@@ -1,7 +1,7 @@
 import { NextFunction, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-import JobTitleRepository from '../repository/jobTtile.repository';
+import JobTitleRepository from '../repository/jobTitle.repository';
 import JobTitleService from '../services/jobTitle.service';
 import { AuthRequest } from '../types/AuthRequest';
 

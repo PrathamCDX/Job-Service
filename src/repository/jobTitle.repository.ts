@@ -22,6 +22,11 @@ class JobTitleRepository extends BaseRepository<JobTitle>{
         return results ;
     }
 
+    async findByTitle(title: string){
+        const response = await this.model.findOne({where:{title}});
+        return response ;
+    }
+
 }
 
 export default JobTitleRepository ;
