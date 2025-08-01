@@ -8,10 +8,12 @@ import JobTitle from './jobTitle.model';
 Job.belongsTo(JobTitle, {
     foreignKey: 'title_id',
     onDelete: 'CASCADE',
+    as: 'jobTitle'
 });
 
 JobTitle.hasMany(Job, {
     foreignKey: 'title_id',
+    as: 'job'
 });
 
 

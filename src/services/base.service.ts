@@ -3,11 +3,30 @@ import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
 
 import logger from '../configs/logger.config';
 import { microServiceConfig } from '../configs/server.config';
+import { GetCityResponse } from '../types/GetCityTypes';
 import { GetRolesResponse } from '../types/GetJobTitleServiceTypes';
 import { verifyToken } from '../utils/auth/auth';
 import { NotFoundError, UnauthorizedError } from '../utils/errors/app.error';
 
 class BaseService {
+
+    async getCityById(id: number, jwtToken: string){
+        let cityName;
+        try{
+            cityName = await axios.get<GetCityResponse>(
+                `${microServiceConfig.USER_SERVICE_URL}city/${id}`,{
+                    headers:{
+                        Authorization: jwtToken
+                    }
+                }
+            );
+            return cityName;
+        }catch(error){
+            logger.error(error);
+            throw error;
+        }
+    }
+
     async isAuthenticated(authToken: string){
         try {
             const decoded = verifyToken(authToken as string);
@@ -35,8 +54,8 @@ class BaseService {
             );
         }catch(error){
             logger.error(error);
+            throw error;
         }
-        console.log('object');
             
         let roleNames: string[] = [];
     

@@ -14,7 +14,7 @@ class JobTitleService extends BaseService {
     async getJobTitleService(getData: GetJobTitleDto ) {
         const {userId, jwtToken, title} = getData;
         await this.isAuthorized(userId, jwtToken);
-        return this.jobTitleRepository.getJobTitle(title);
+        return await this.jobTitleRepository.getJobTitle(title);
     }
 
     async delJobTitleService(deleteData: DeleteJobTitleDto) {
@@ -26,7 +26,7 @@ class JobTitleService extends BaseService {
             throw new BadRequestError('Job title does not exist');
         }
 
-        return this.jobTitleRepository.delete({ id });
+        return await this.jobTitleRepository.delete({ id });
     }
 
     async updateJobTitleService(updateData: UpdateJobTitleDto) {
@@ -38,7 +38,7 @@ class JobTitleService extends BaseService {
             throw new BadRequestError('Job title does not exist');
         }
 
-        return this.jobTitleRepository.updateById(id, {
+        return await this.jobTitleRepository.updateById(id, {
             title: title,
         });
     }
@@ -52,7 +52,7 @@ class JobTitleService extends BaseService {
             throw new BadRequestError('Job title already exist');
         }
 
-        return this.jobTitleRepository.create({ title });
+        return await this.jobTitleRepository.create({ title });
     }
 }
 

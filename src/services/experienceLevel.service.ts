@@ -20,7 +20,7 @@ class ExperienceLevelService extends BaseService {
             throw new BadRequestError('Experience level already exist');
         }
         
-        return this.experienceLevelRepository.create({name, minYears, maxYears});
+        return await this.experienceLevelRepository.create({name, minYears, maxYears});
     }
 
     async getExperienceLevelByIdService(getDataById: GetExperienceLevelByIdDto){
@@ -32,7 +32,7 @@ class ExperienceLevelService extends BaseService {
     async getExperienceLevelService(getData: GetExperienceLevelDto){
         const {userId, jwtToken, name} = getData;
         await this.isAuthorized(userId, jwtToken);
-        return this.experienceLevelRepository.getExperienceLevel(name);
+        return await this.experienceLevelRepository.getExperienceLevel(name);
     }
 
     async updateExperienceLevelService(updateData: UpdateExperienceLevelDto){
@@ -44,7 +44,7 @@ class ExperienceLevelService extends BaseService {
             throw new BadRequestError('Experience level does not exist');
         }
 
-        return this.experienceLevelRepository.updateById(id, {name, minYears, maxYears});
+        return await this.experienceLevelRepository.updateById(id, {name, minYears, maxYears});
     }
 
     async deleteExperienceLevelService(deleteData: DeleteExperienceLevelDto){
@@ -56,7 +56,7 @@ class ExperienceLevelService extends BaseService {
             throw new BadRequestError('Experience level does not exist');
         }
 
-        return this.experienceLevelRepository.delete({id});
+        return await this.experienceLevelRepository.delete({id});
     }
     
 }
