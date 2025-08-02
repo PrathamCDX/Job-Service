@@ -1,25 +1,24 @@
 import { CreateJobTitleDto, DeleteJobTitleDto, GetJobTitleDto, UpdateJobTitleDto } from '../dtos/jobTitle.dto';
 import JobTitleRepository from '../repository/jobTitle.repository';
 import { BadRequestError } from '../utils/errors/app.error';
-import BaseService from './base.service';
+import { isAuthorized } from '../utils/services/AuthorizationService';
 
-class JobTitleService extends BaseService {
+class JobTitleService {
     private jobTitleRepository: JobTitleRepository;
 
     constructor(jobTitleRepository: JobTitleRepository) {
-        super();
         this.jobTitleRepository = jobTitleRepository;
     }
 
     async getJobTitleService(getData: GetJobTitleDto ) {
         const {userId, jwtToken, title} = getData;
-        await this.isAuthorized(userId, jwtToken);
+        await isAuthorized(userId, jwtToken);
         return await this.jobTitleRepository.getJobTitle(title);
     }
 
     async delJobTitleService(deleteData: DeleteJobTitleDto) {
         const {userId, jwtToken, id} = deleteData;
-        await this.isAuthorized(userId, jwtToken);
+        await isAuthorized(userId, jwtToken);
 
         const checkJobTitle= await this.jobTitleRepository.findById(id);
         if(!checkJobTitle){
@@ -31,7 +30,7 @@ class JobTitleService extends BaseService {
 
     async updateJobTitleService(updateData: UpdateJobTitleDto) {
         const {id, title, userId, jwtToken}= updateData;
-        await this.isAuthorized(userId, jwtToken);
+        await isAuthorized(userId, jwtToken);
 
         const checkJobTitle= await this.jobTitleRepository.findById(id);
         if(!checkJobTitle){
@@ -45,7 +44,7 @@ class JobTitleService extends BaseService {
 
     async createJobTitleService(createData: CreateJobTitleDto) {
         const {title, userId, jwtToken}= createData;
-        await this.isAuthorized(userId, jwtToken);
+        await isAuthorized(userId, jwtToken);
 
         const checkJobTitle= await this.jobTitleRepository.findByTitle(title);
         if(checkJobTitle){

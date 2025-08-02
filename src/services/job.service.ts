@@ -4,14 +4,14 @@ import { CreateJobDto, DeleteJobDto, GetAllJobDto,  GetJobDetailsDto, UpdateJobD
 import JobRepository from '../repository/job.repository';
 import JobSkillRepository from '../repository/jobSkill.repository';
 import { BadRequestError, NotFoundError } from '../utils/errors/app.error';
-import BaseService from './base.service';
+import { isAuthorized } from '../utils/services/AuthorizationService';
+import { getCityById } from '../utils/services/CityService';
 
-class JobService extends BaseService{
+class JobService {
     private jobRepository: JobRepository;
     private jobSkillRepository: JobSkillRepository;
 
     constructor(jobRepository: JobRepository,  jobSkillRepository: JobSkillRepository){
-        super();
         this.jobRepository= jobRepository;
         this.jobSkillRepository= jobSkillRepository ;
     }
@@ -19,16 +19,16 @@ class JobService extends BaseService{
     async getJobDetailsById(getJobDetails: GetJobDetailsDto){
         try {
             const {userId, jwtToken, id } = getJobDetails;
-            await this.isAuthorized(userId, jwtToken);
+            await isAuthorized(userId, jwtToken);
             
             const checkJob = await this.jobRepository.findById(id);
             if(!checkJob){
                 throw new NotFoundError('Job not found');
             }
 
-            const city = await this.getCityById(checkJob.city_id, jwtToken);
+            const city = await getCityById(checkJob.city_id, jwtToken);
 
-            await this.isAuthorized(userId, jwtToken);
+            await isAuthorized(userId, jwtToken);
             const data =await this.jobRepository.getJobDetails(Number(id));
             const response = {
                 ...data?.toJSON(),       
@@ -44,12 +44,12 @@ class JobService extends BaseService{
 
     async getAllJobsService(getAllJobData: GetAllJobDto){        
         const {userId, jwtToken} = getAllJobData;
-        await this.isAuthorized(userId, jwtToken);
+        await isAuthorized(userId, jwtToken);
 
         const record =await this.jobRepository.findAll();
         const response = await Promise.all(
             record.map(async (job) => {
-                const city = await this.getCityById(job.city_id, jwtToken);
+                const city = await getCityById(job.city_id, jwtToken);
                 return {
                     ...job.toJSON(), 
                     city: city.data.data.name,
@@ -65,7 +65,7 @@ class JobService extends BaseService{
     async createJobService(createJobData: CreateJobDto){
 
         const {userId, jwtToken, skillIds, ...rest} = createJobData;
-        await this.isAuthorized(userId, jwtToken);
+        await isAuthorized(userId, jwtToken);
         const transaction = await sequelize.transaction();
         try {
             const jobRecord = await this.jobRepository.create({...rest}, transaction );
@@ -83,7 +83,7 @@ class JobService extends BaseService{
     async deleteJobService(deleteJobData: DeleteJobDto){
         const {userId, jwtToken, id} = deleteJobData;
 
-        await this.isAuthorized(userId, jwtToken);
+        await isAuthorized(userId, jwtToken);
 
         const checkJob= await this.jobRepository.findById(id);
         if(!checkJob){
@@ -95,7 +95,7 @@ class JobService extends BaseService{
 
     async updateJobService(updateJobData: UpdateJobDto){
         const {userId, jwtToken, id, ...rest}= updateJobData;
-        await this.isAuthorized(userId, jwtToken);
+        await isAuthorized(userId, jwtToken);
 
         const checkJob = await this.jobRepository.findById(id);
         if(!checkJob){
