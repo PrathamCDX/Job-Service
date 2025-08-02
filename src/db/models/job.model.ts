@@ -121,28 +121,28 @@ Job.init({
     timestamps: false,
 });
 
-Job.belongsTo(JobTitle, {
-    foreignKey: 'title_id',
-    onDelete: 'CASCADE',
-    as: 'jobTitle'
-});
+// Job.belongsTo(JobTitle, {
+//     foreignKey: 'title_id',
+//     onDelete: 'CASCADE',
+//     as: 'jobTitle'
+// });
 
-Job.belongsTo(EmploymentType, {
-    foreignKey: 'employment_type_id',
-    onDelete: 'CASCADE',
-    as: 'employmentType'
-});
+// Job.belongsTo(EmploymentType, {
+//     foreignKey: 'employment_type_id',
+//     onDelete: 'CASCADE',
+//     as: 'employmentType'
+// });
 
-Job.belongsTo(ExperienceLevel, {
-    foreignKey: 'experience_level_id',
-    onDelete: 'CASCADE', 
-    as: 'experienceLevel'
-});
+// Job.belongsTo(ExperienceLevel, {
+//     foreignKey: 'experience_level_id',
+//     onDelete: 'CASCADE', 
+//     as: 'experienceLevel'
+// });
 
-Job.belongsTo(Company, {
-    foreignKey: 'company_id',
-    onDelete: 'CASCADE', 
-    as: 'companyId'
-});
+// Job.belongsTo(Company, {
+//     foreignKey: 'company_id',
+//     onDelete: 'CASCADE', 
+//     as: 'companyId'
+// });
 
 export default Job;

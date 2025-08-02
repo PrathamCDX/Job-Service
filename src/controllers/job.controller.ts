@@ -2,11 +2,13 @@ import { NextFunction, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
 import JobRepository from '../repository/job.repository';
+import JobSkillRepository from '../repository/jobSkill.repository';
 import JobService from '../services/job.service';
 import { AuthRequest } from '../types/AuthRequest';
 
 const jobRepository= new JobRepository();
-const jobService= new JobService(jobRepository);
+const jobSkillRepository= new JobSkillRepository();
+const jobService= new JobService(jobRepository, jobSkillRepository);
 
 async function getJobDetailsById(req: AuthRequest, res: Response, next: NextFunction){
     try {

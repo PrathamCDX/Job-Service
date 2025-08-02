@@ -1,3 +1,6 @@
+import { InferCreationAttributes, Optional, Transaction } from 'sequelize';
+import { NullishPropertiesOf } from 'sequelize/types/utils';
+
 import Job from '../db/models/job.model';
 import BaseRepository from './base.repository';
 
@@ -5,6 +8,11 @@ class JobRepository extends BaseRepository<Job>{
 
     constructor(){
         super(Job);
+    }
+
+    async create(data: Optional<InferCreationAttributes<Job, { omit: never; }>, NullishPropertiesOf<InferCreationAttributes<Job, { omit: never; }>>>, transaction?: Transaction): Promise<Job> {
+        const record = await this.model.create(data, {transaction: transaction});
+        return record;
     }
 
     async findAll(): Promise<Job[]> {

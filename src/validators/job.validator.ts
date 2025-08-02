@@ -25,6 +25,7 @@ export const CreateJobSchema = z.object({
     city_id: z.number({ required_error: 'City ID is required' }),
     is_remote: z.boolean({ required_error: 'Remote status is required' }),
     apply_link: z.string({ required_error: 'Apply link is required' }).url('Apply link must be a valid URL'),
+    skillIds: z.array(z.number({required_error: 'Skill Ids must be a number '}))
 });
 
 export const DeleteJobSchema= z.object({

@@ -37,6 +37,7 @@ export type CreateJobDto= {
     city_id: number;
     is_remote: boolean;
     apply_link: string;
+    skillIds: number[];
 }
 
 export type DeleteJobDto= {

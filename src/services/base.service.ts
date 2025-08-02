@@ -54,7 +54,8 @@ class BaseService {
             );
         }catch(error){
             logger.error(error);
-            throw error;
+            console.log(error);
+            throw new UnauthorizedError('User not authorized');
         }
             
         let roleNames: string[] = [];

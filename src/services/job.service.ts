@@ -1,14 +1,19 @@
+import logger from '../configs/logger.config';
+import sequelize from '../db/models/sequelize';
 import { CreateJobDto, DeleteJobDto, GetAllJobDto,  GetJobDetailsDto, UpdateJobDto } from '../dtos/job.dto';
 import JobRepository from '../repository/job.repository';
+import JobSkillRepository from '../repository/jobSkill.repository';
 import { BadRequestError, NotFoundError } from '../utils/errors/app.error';
 import BaseService from './base.service';
 
 class JobService extends BaseService{
     private jobRepository: JobRepository;
+    private jobSkillRepository: JobSkillRepository;
 
-    constructor(jobRepository: JobRepository){
+    constructor(jobRepository: JobRepository,  jobSkillRepository: JobSkillRepository){
         super();
         this.jobRepository= jobRepository;
+        this.jobSkillRepository= jobSkillRepository ;
     }
 
     async getJobDetailsById(getJobDetails: GetJobDetailsDto){
@@ -58,10 +63,21 @@ class JobService extends BaseService{
 
 
     async createJobService(createJobData: CreateJobDto){
-        const {userId, jwtToken, ...rest} = createJobData;
+
+        const {userId, jwtToken, skillIds, ...rest} = createJobData;
         await this.isAuthorized(userId, jwtToken);
-        return await this.jobRepository.create({...rest});
-         
+        const transaction = await sequelize.transaction();
+        try {
+            const jobRecord = await this.jobRepository.create({...rest}, transaction );
+            const bulkData = skillIds.map((skillId)=>{return {job_id: jobRecord.id, skill_id: skillId};});
+            const jobSkills = await this.jobSkillRepository.createBulk(bulkData, transaction);
+            transaction.commit();
+            return {jobRecord, jobSkills};
+        } catch (error) {
+            logger.error(error);
+            transaction.rollback();
+        }
+       
     }
 
     async deleteJobService(deleteJobData: DeleteJobDto){
