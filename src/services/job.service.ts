@@ -6,6 +6,7 @@ import JobSkillRepository from '../repository/jobSkill.repository';
 import { BadRequestError, NotFoundError } from '../utils/errors/app.error';
 import { isAuthorized } from '../utils/services/AuthorizationService';
 import { getCityById } from '../utils/services/CityService';
+import { getSkillById } from '../utils/services/SkillService';
 
 class JobService {
     private jobRepository: JobRepository;
@@ -15,6 +16,7 @@ class JobService {
         this.jobRepository= jobRepository;
         this.jobSkillRepository= jobSkillRepository ;
     }
+    
 
     async getJobDetailsById(getJobDetails: GetJobDetailsDto){
         try {
@@ -30,11 +32,18 @@ class JobService {
 
             await isAuthorized(userId, jwtToken);
             const data =await this.jobRepository.getJobDetails(Number(id));
+            const skillIds = await this.jobSkillRepository.findSkillByJobId(id);
+
+            const skills= await Promise.all(skillIds.map(async(skillId)=>{
+                const skill = await getSkillById(skillId.skill_id, jwtToken);
+                return skill.data.data.name; 
+            }));
             const response = {
                 ...data?.toJSON(),       
                 city: {
                     name: city.data.data.name
-                }
+                },
+                skills: skills
             };
             return response;
         } catch (error) {
@@ -47,20 +56,34 @@ class JobService {
         await isAuthorized(userId, jwtToken);
 
         const record =await this.jobRepository.findAll();
+        
         const response = await Promise.all(
             record.map(async (job) => {
                 const city = await getCityById(job.city_id, jwtToken);
+                const skillIds = await this.jobSkillRepository.findSkillByJobId(job.id);
+                if(skillIds.length==0){
+                    return {
+                        ...job.toJSON(), 
+                        city: city.data.data.name
+                    };
+                }
+                const skills= await Promise.all(skillIds.map(async(skillId)=>{
+                    const skill = await getSkillById(skillId.skill_id, jwtToken);
+                    return skill.data.data.name; 
+                }));
+
                 return {
                     ...job.toJSON(), 
                     city: city.data.data.name,
+                    skills
                 };
             })
         );
         console.log(response);
         return response;
 
+        
     }
-
 
     async createJobService(createJobData: CreateJobDto){
 
@@ -90,19 +113,59 @@ class JobService {
             throw new BadRequestError('Job does not exist');
         }
 
-        return await this.jobRepository.delete({id});
+        const transaction = await sequelize.transaction();
+
+        try {
+            await this.jobSkillRepository.delete({job_id: id}, transaction);
+            await this.jobRepository.delete({id}, transaction);
+            transaction.commit();
+            return true;
+        } catch (error) {
+            logger.error(error);
+            transaction.rollback();
+        }
+
     }
 
     async updateJobService(updateJobData: UpdateJobDto){
-        const {userId, jwtToken, id, ...rest}= updateJobData;
+        const {userId, jwtToken, id, skillIds, ...rest}= updateJobData;
         await isAuthorized(userId, jwtToken);
 
         const checkJob = await this.jobRepository.findById(id);
         if(!checkJob){
             throw new BadRequestError('Job does not exist');
         }
+        
+        const skillIdResponse = await this.jobSkillRepository.findSkillByJobId(checkJob.id);
+        const currentSkillIdArray= skillIdResponse.map((skillId)=>{
+            return skillId.skill_id;
+        });
 
-        return await this.jobRepository.updateById(id, rest); 
+        const transaction = await sequelize.transaction();
+        try {
+
+            skillIds.forEach((skillId)=>{
+                if(!currentSkillIdArray.includes(skillId)){
+                    this.jobSkillRepository.create({job_id: checkJob.id, skill_id: skillId}, transaction);
+                }
+            });
+
+            currentSkillIdArray.forEach((skillId)=>{
+                if(!skillIds.includes(skillId)){
+                    this.jobSkillRepository.delete({job_id: checkJob.id, skill_id: skillId}, transaction);
+                }
+            });
+            const record= await this.jobRepository.updateById(id, rest, transaction); 
+            transaction.commit();
+            return {
+                record,
+                skillIds
+            };
+        } catch (error) {
+            logger.error(error);
+            transaction.rollback();
+        }
+
     }
 }
 

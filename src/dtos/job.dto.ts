@@ -60,4 +60,5 @@ export type UpdateJobDto= {
     city_id?: number;
     is_remote?: boolean;
     apply_link?: string;
+    skillIds: number[];
 }
