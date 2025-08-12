@@ -1,6 +1,7 @@
 import { NextFunction, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
+import CompanyCityRepository from '../repository/companyCity.repository';
 import JobRepository from '../repository/job.repository';
 import JobSkillRepository from '../repository/jobSkill.repository';
 import JobService from '../services/job.service';
@@ -8,7 +9,8 @@ import { AuthRequest } from '../types/AuthRequest';
 
 const jobRepository= new JobRepository();
 const jobSkillRepository= new JobSkillRepository();
-const jobService= new JobService(jobRepository, jobSkillRepository);
+const companyCityRepository= new CompanyCityRepository();
+const jobService= new JobService(jobRepository, jobSkillRepository, companyCityRepository);
 
 async function getJobDetailsById(req: AuthRequest, res: Response, next: NextFunction){
     try {

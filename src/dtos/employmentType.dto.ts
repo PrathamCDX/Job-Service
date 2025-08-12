@@ -11,15 +11,15 @@ export type DeleteEmplymentTypeDto= {
     id: number;
 }
 
-export type GetEmploymentType= {
-    userId: number;
-    jwtToken: string;
-}
-
 export type UpdateEmploymentTypeDto= {
     userId: number;
     jwtToken: string;
     id: number;
     name?: string;
     description?: string;
+}
+
+export type GetEmploymentType= {
+    userId: number;
+    jwtToken: string;
 }

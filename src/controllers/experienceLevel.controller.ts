@@ -63,7 +63,7 @@ async function findByIdExperienceLevelController(req: AuthRequest, res: Response
 
 async function findExperienceLevelController(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-        const name= req.query.name ;
+        const name= '' ;
         const userId = req.user?.id ;
         const jwtToken = req.headers.authorization;
 

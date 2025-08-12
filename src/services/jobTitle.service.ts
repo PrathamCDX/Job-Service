@@ -13,7 +13,9 @@ class JobTitleService {
     async getJobTitleService(getData: GetJobTitleDto ) {
         const {userId, jwtToken, title} = getData;
         await isAuthorized(userId, jwtToken);
-        return await this.jobTitleRepository.getJobTitle(title);
+        const records = await this.jobTitleRepository.getJobTitle(title);
+        const response = records.map((record)=>{return {id: record.id, name: record.title};});
+        return response ;
     }
 
     async delJobTitleService(deleteData: DeleteJobTitleDto) {

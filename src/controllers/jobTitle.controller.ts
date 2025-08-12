@@ -10,20 +10,21 @@ const jobTitleService = new JobTitleService(jobTitleRepository);
 
 async function getJobTitle(req: AuthRequest, res: Response, next: NextFunction){
     try {
-        const title = req.query.name;
+        const title = req.query.name ;
+        console.log('title', title);
         const userId = req.user?.id ;
         const jwtToken = req.headers.authorization;
 
-        if(!title){
-            res.status(StatusCodes.BAD_REQUEST).json({
-                success: false,
-                message: 'No job title',
-                data: {},
-                error: {
-                    message: 'Bad Request'
-                }
-            });
-        }
+        // if(!title){
+        //     res.status(StatusCodes.BAD_REQUEST).json({
+        //         success: false,
+        //         message: 'No job title',
+        //         data: {},
+        //         error: {
+        //             message: 'Bad Request'
+        //         }
+        //     });
+        // }
 
         const getData= {
             title: String(title),
