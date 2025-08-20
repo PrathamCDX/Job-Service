@@ -32,15 +32,20 @@ class CompanyService {
 
     async createCompany(createData: CreateCompanyDto){
 
-        const {userId, jwtToken, name,  ...rest} = createData;
-        await isAuthorized(userId, jwtToken);
+        try {
+            const {userId, jwtToken, name,  ...rest} = createData;
+            await isAuthorized(userId, jwtToken);
 
-        const checkCompany = await this.companyRepository.findByName(name);
-        if(checkCompany){
-            throw new BadRequestError('Company already created');
+            const checkCompany = await this.companyRepository.findByName(name);
+            if(checkCompany){
+                throw new BadRequestError('Company already created');
+            }
+            const companyRecord= await this.companyRepository.create({name, ...rest});
+            return {companyRecord};
+        } catch (error) {
+            console.log(error);
+            throw error;
         }
-        const companyRecord= await this.companyRepository.create({name, ...rest});
-        return {companyRecord};
                
     }
 

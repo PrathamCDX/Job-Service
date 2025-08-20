@@ -66,6 +66,7 @@ class JobRepository extends BaseRepository<Job> {
     async findAll(): Promise<Job[]> {
         const records = await this.model.findAll({
             attributes: [
+                'created_at',
                 'is_remote',
                 'city_id',
                 'id',
@@ -94,7 +95,7 @@ class JobRepository extends BaseRepository<Job> {
 
     async getJobDetails(id: number) {
         const response = await this.model.findByPk(id, {
-            attributes: ['salary_min', 'salary_max', 'is_remote', 'apply_link'],
+            attributes: ['salary_min', 'salary_max', 'is_remote', 'apply_link', 'created_at', 'description'],
             include: [
                 {
                     association: Job.associations.jobTitle,

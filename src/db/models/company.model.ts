@@ -11,8 +11,9 @@ import sequelize from './sequelize';
 class Company extends Model<InferAttributes<Company>,InferCreationAttributes<Company>> {
     declare id: CreationOptional<number>;
     declare name: string;
-    declare website: string;
     declare logo: string;
+    declare website: CreationOptional<string>;
+    declare description: CreationOptional<string>;
     declare created_at: CreationOptional<Date>;
     declare updated_at: CreationOptional<Date>;
     declare deleted_at: CreationOptional<Date | null>;
@@ -30,13 +31,17 @@ Company.init(
             allowNull: false,
             unique: true,
         },
-        website: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true,
-        },
         logo:{
             type: DataTypes.STRING,
+            allowNull: false
+        },
+        website: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            unique: true,
+        },
+        description:{
+            type: DataTypes.TEXT,
             allowNull: true
         },
         created_at: {

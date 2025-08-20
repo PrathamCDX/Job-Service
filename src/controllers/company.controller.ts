@@ -11,6 +11,7 @@ const companyService = new CompanyService(companyRepository);
 
 async function uploadLogoHandler(req: Request, res: Response, next: NextFunction){
     try {
+        console.log(req.file);
         if(!req.file){
             throw new BadRequestError('No profile pic');
         }
@@ -47,7 +48,7 @@ async function getCompanyDetailsById(req: Request, res: Response, next: NextFunc
 
 async function createComapany(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-        const {name, website, logo, cityId} = req.body; 
+        const {name, website, logo, description, cityId} = req.body; 
         const userId = Number( req.user?.id );
         const jwtToken = String(req.headers.authorization);
 
@@ -57,7 +58,8 @@ async function createComapany(req: AuthRequest, res: Response, next: NextFunctio
             logo,
             userId,
             jwtToken,
-            city_id: Number(cityId)
+            city_id: Number(cityId),
+            description
         };
 
         const response = await companyService.createCompany(createData);

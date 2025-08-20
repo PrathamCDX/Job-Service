@@ -16,6 +16,7 @@ export default {
                 recruiter_id INT,
                 company_id INT,
                 city_id INT,
+                description TEXT DEFAULT NULL,
                 is_remote BOOLEAN NOT NULL DEFAULT FALSE,
                 apply_link VARCHAR(255) NOT NULL UNIQUE,
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,

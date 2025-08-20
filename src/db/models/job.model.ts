@@ -18,6 +18,7 @@ class Job extends Model<InferAttributes<Job>, InferCreationAttributes<Job>>{
     declare city_id: CreationOptional<number>;
     declare is_remote: boolean;
     declare apply_link: string;
+    declare description: CreationOptional<string>;
     declare created_at: CreationOptional<Date>;
     declare updated_at: CreationOptional<Date>;
     declare deleted_at: CreationOptional<Date | null>;
@@ -101,6 +102,10 @@ Job.init({
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
+    },
+    description:{
+        type: DataTypes.TEXT,
+        allowNull: true,
     },
     created_at: {
         type: DataTypes.DATE,

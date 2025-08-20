@@ -2,8 +2,9 @@ export type CreateCompanyDto= {
     userId: number;
     jwtToken: string;
     name: string;
-    website: string;
     logo: string;
+    website?: string;
+    description?: string;
 }
 
 
@@ -14,6 +15,7 @@ export type UpdateCompanyDto= {
     name?: string;
     website?: string;
     logo?: string;
+    description?: string;
 }
 
 export type DeleteCompanyDto= {
