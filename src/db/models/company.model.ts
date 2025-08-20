@@ -12,6 +12,7 @@ class Company extends Model<InferAttributes<Company>,InferCreationAttributes<Com
     declare id: CreationOptional<number>;
     declare name: string;
     declare website: string;
+    declare logo: string;
     declare created_at: CreationOptional<Date>;
     declare updated_at: CreationOptional<Date>;
     declare deleted_at: CreationOptional<Date | null>;
@@ -33,6 +34,10 @@ Company.init(
             type: DataTypes.STRING,
             allowNull: false,
             unique: true,
+        },
+        logo:{
+            type: DataTypes.STRING,
+            allowNull: true
         },
         created_at: {
             type: DataTypes.DATE,

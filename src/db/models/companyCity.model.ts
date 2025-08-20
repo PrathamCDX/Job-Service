@@ -9,6 +9,7 @@ import {
 import sequelize from './sequelize';
 
 class CompanyCity extends Model<InferAttributes<CompanyCity>,InferCreationAttributes<CompanyCity>> {
+    declare id: CreationOptional<number>;
     declare company_id: number;
     declare city_id: number;
     declare created_at: CreationOptional<Date>;
@@ -17,15 +18,18 @@ class CompanyCity extends Model<InferAttributes<CompanyCity>,InferCreationAttrib
 
 CompanyCity.init(
     {
+        id: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true,
+        },
         company_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            primaryKey: true,
         },
         city_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            primaryKey: true,
         },
         created_at: {
             type: DataTypes.DATE,
