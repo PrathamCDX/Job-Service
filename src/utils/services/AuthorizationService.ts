@@ -17,7 +17,6 @@ export async function isAuthorized(userId: number, jwtToken: string){
         );
     }catch(error){
         logger.error(error);
-        console.log(error);
         throw new UnauthorizedError('User not authorized');
     }
             

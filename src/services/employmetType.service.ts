@@ -1,37 +1,64 @@
-import { CreateEmploymentTypeDto, DeleteEmplymentTypeDto, GetEmploymentType, UpdateEmploymentTypeDto } from '../dtos/employmentType.dto';
+import logger from '../configs/logger.config';
+import { 
+    CreateEmploymentTypeDto, 
+    DeleteEmplymentTypeDto, 
+    GetEmploymentType, 
+    UpdateEmploymentTypeDto 
+} from '../dtos/employmentType.dto';
 import EmploymentTypeRepository from '../repository/employmentType.repository';
+import { InternalServerError } from '../utils/errors/app.error';
 import { isAuthorized } from '../utils/services/AuthorizationService';
 
 class EmploymentTypeService {
     private employmentTypeRepository: EmploymentTypeRepository;
 
-    constructor( employmentTypeRepository: EmploymentTypeRepository){
-        this.employmentTypeRepository= employmentTypeRepository;
+    constructor(employmentTypeRepository: EmploymentTypeRepository) {
+        this.employmentTypeRepository = employmentTypeRepository;
     }
 
-    async createEmploymentType(createData: CreateEmploymentTypeDto){
-        const {userId, jwtToken, ...rest} = createData;
-        await isAuthorized(userId, jwtToken);
-        return await this.employmentTypeRepository.create({...rest});
+    async createEmploymentType(createData: CreateEmploymentTypeDto) {
+        try {
+            const { userId, jwtToken, ...rest } = createData;
+            await isAuthorized(userId, jwtToken);
+            return await this.employmentTypeRepository.create({ ...rest });
+        } catch (error) {
+            logger.error(error);
+            throw new InternalServerError('Error creating employment type');
+        }
     }
 
-    async deleteEmploymentType(deleteData: DeleteEmplymentTypeDto ){
-        const {userId, jwtToken, id} = deleteData;
-        await isAuthorized(userId, jwtToken);
-        return await this.employmentTypeRepository.delete({id});
+    async deleteEmploymentType(deleteData: DeleteEmplymentTypeDto) {
+        try {
+            const { userId, jwtToken, id } = deleteData;
+            await isAuthorized(userId, jwtToken);
+            return await this.employmentTypeRepository.delete({ id });
+        } catch (error) {
+            logger.error(error);
+            throw new InternalServerError('Error deleting employment type');
+        }
     }
 
-    async getEmploymentType(getData: GetEmploymentType){
-        const {userId, jwtToken } = getData;
-        await isAuthorized(userId, jwtToken);
-        return await this.employmentTypeRepository.findAll();
+    async getEmploymentType(getData: GetEmploymentType) {
+        try {
+            const { userId, jwtToken } = getData;
+            await isAuthorized(userId, jwtToken);
+            return await this.employmentTypeRepository.findAll();
+        } catch (error) {
+            logger.error(error);
+            throw new InternalServerError('Error fetching employment types');
+        }
     }
 
-    async updateEmploymentType(updateData: UpdateEmploymentTypeDto){
-        const {userId, jwtToken, id,...rest } = updateData;
-        await isAuthorized(userId, jwtToken);
-        return await this.employmentTypeRepository.updateById(id, {...rest});
+    async updateEmploymentType(updateData: UpdateEmploymentTypeDto) {
+        try {
+            const { userId, jwtToken, id, ...rest } = updateData;
+            await isAuthorized(userId, jwtToken);
+            return await this.employmentTypeRepository.updateById(id, { ...rest });
+        } catch (error) {
+            logger.error(error);
+            throw new InternalServerError('Error updating employment type');
+        }
     }
 }
 
-export default EmploymentTypeService ;
+export default EmploymentTypeService;

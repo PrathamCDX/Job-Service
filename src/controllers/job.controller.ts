@@ -71,7 +71,6 @@ async function createJob(req: AuthRequest, res: Response, next: NextFunction){
         };
 
         const response = await jobService.createJobService(createData);
-        console.log('resp', response);
         res.status(StatusCodes.OK).json({
             success: true,
             message: 'Created jobs successfully',

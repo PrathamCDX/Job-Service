@@ -11,7 +11,6 @@ const jobTitleService = new JobTitleService(jobTitleRepository);
 async function getJobTitle(req: AuthRequest, res: Response, next: NextFunction){
     try {
         const title = req.query.name ;
-        console.log('title', title);
         const userId = req.user?.id ;
         const jwtToken = req.headers.authorization;
 
@@ -103,7 +102,6 @@ async function createJobTitle(req: AuthRequest, res: Response, next: NextFunctio
             userId: Number(userId),
             jwtToken: String(jwtToken)
         };
-        console.log(createData);
 
         const response = await jobTitleService.createJobTitleService(createData);
         res.status(StatusCodes.OK).json({

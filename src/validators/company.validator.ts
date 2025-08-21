@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const deleteCompanySchema= z.object({
+export const deleteCompanySchema = z.object({
     id: z.number({
         required_error: 'Company ID is required',
         invalid_type_error: 'Company ID must be a number',
@@ -18,14 +18,18 @@ export const updateCompanySchema = z.object({
         .min(1, { message: 'Name cannot be empty' })
         .optional(),
 
+    logo: z
+        .string({ invalid_type_error: 'Logo must be a string' })
+        .url({ message: 'Logo must be a valid URL' })
+        .optional(),
+
     website: z
         .string({ invalid_type_error: 'Website must be a string' })
         .url({ message: 'Website must be a valid URL' })
         .optional(),
 
-    logo: z
-        .string({ invalid_type_error: 'Logo must be a string' })
-        .url({ message: 'Logo must be a valid URL' })
+    description: z
+        .string({ invalid_type_error: 'Description must be a string' })
         .optional(),
 });
 
@@ -37,17 +41,17 @@ export const createCompanySchema = z.object({
         })
         .min(1, { message: 'Company name cannot be empty' }),
 
-    website: z
-        .string({
-            required_error: 'Website is required',
-            invalid_type_error: 'Website must be a string',
-        })
-        .url({ message: 'Website must be a valid URL' }),
-
     logo: z
         .string({
             required_error: 'Logo URL is required',
             invalid_type_error: 'Logo must be a string',
         })
         .url({ message: 'Logo must be a valid URL' }),
+    website: z
+        .union([
+            z.string().url({ message: 'Website must be a valid URL' }),
+            z.literal(''),
+        ])
+        .optional(),
+    description: z.string({}).optional(),
 });

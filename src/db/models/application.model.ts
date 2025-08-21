@@ -15,6 +15,7 @@ class Application extends Model<InferAttributes<Application>,InferCreationAttrib
     declare candidate_id: number;
     declare job_id: ForeignKey<Job['id']>;
     declare applied_at: CreationOptional<Date>;
+    declare deleted_at: CreationOptional<Date | null>;
 }
 
 Application.init(
@@ -42,6 +43,11 @@ Application.init(
             allowNull: true,
             defaultValue: DataTypes.NOW,
         },
+        deleted_at: {
+            type: DataTypes.DATE,
+            allowNull: true,
+            defaultValue: null,
+        }
     },
     {
         sequelize,

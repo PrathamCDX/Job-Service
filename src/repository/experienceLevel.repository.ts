@@ -10,7 +10,6 @@ class ExperienceLevelRepository extends BaseRepository<ExperienceLevel>{
     }
     
     async getExperienceLevel(experienceLevel: string){
-        console.log('object', experienceLevel);
         const results = await this.model.findAll({
             where: {
                 name: {
