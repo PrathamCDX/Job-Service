@@ -31,7 +31,6 @@ async function createExperienceLevelController(req: AuthRequest, res: Response, 
             error: {}
         });
     } catch (error) {
-        console.log(error);
         next(error);
     }
 }

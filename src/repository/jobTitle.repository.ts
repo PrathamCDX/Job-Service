@@ -10,7 +10,6 @@ class JobTitleRepository extends BaseRepository<JobTitle>{
     }
 
     async getJobTitle(jobTitle: string){
-        console.log('object', jobTitle);
         const results = await this.model.findAll({
             where: {
                 title: {
@@ -18,7 +17,6 @@ class JobTitleRepository extends BaseRepository<JobTitle>{
                 }
             }
         });
-        console.log('object', jobTitle);
         return results ;
     }
 

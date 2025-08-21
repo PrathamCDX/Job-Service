@@ -1,6 +1,12 @@
-import { CreateJobTitleDto, DeleteJobTitleDto, GetJobTitleDto, UpdateJobTitleDto } from '../dtos/jobTitle.dto';
+import logger from '../configs/logger.config';
+import { 
+    CreateJobTitleDto, 
+    DeleteJobTitleDto, 
+    GetJobTitleDto, 
+    UpdateJobTitleDto 
+} from '../dtos/jobTitle.dto';
 import JobTitleRepository from '../repository/jobTitle.repository';
-import { BadRequestError } from '../utils/errors/app.error';
+import { BadRequestError, InternalServerError } from '../utils/errors/app.error';
 import { isAuthorized } from '../utils/services/AuthorizationService';
 
 class JobTitleService {
@@ -10,50 +16,68 @@ class JobTitleService {
         this.jobTitleRepository = jobTitleRepository;
     }
 
-    async getJobTitleService(getData: GetJobTitleDto ) {
-        const {userId, jwtToken, title} = getData;
+    async getJobTitleService(getData: GetJobTitleDto) {
+        const { userId, jwtToken, title } = getData;
         await isAuthorized(userId, jwtToken);
-        const records = await this.jobTitleRepository.getJobTitle(title);
-        const response = records.map((record)=>{return {id: record.id, name: record.title};});
-        return response ;
+
+        try {
+            const records = await this.jobTitleRepository.getJobTitle(title);
+            return records.map((record) => ({ id: record.id, name: record.title }));
+        } catch (error) {
+            logger.error(error);
+            throw new InternalServerError('Error fetching job titles');
+        }
     }
 
     async delJobTitleService(deleteData: DeleteJobTitleDto) {
-        const {userId, jwtToken, id} = deleteData;
+        const { userId, jwtToken, id } = deleteData;
         await isAuthorized(userId, jwtToken);
 
-        const checkJobTitle= await this.jobTitleRepository.findById(id);
-        if(!checkJobTitle){
-            throw new BadRequestError('Job title does not exist');
-        }
+        try {
+            const checkJobTitle = await this.jobTitleRepository.findById(id);
+            if (!checkJobTitle) {
+                throw new BadRequestError('Job title does not exist');
+            }
 
-        return await this.jobTitleRepository.delete({ id });
+            return await this.jobTitleRepository.delete({ id });
+        } catch (error) {
+            logger.error(error);
+            throw new InternalServerError('Error deleting job title');
+        }
     }
 
     async updateJobTitleService(updateData: UpdateJobTitleDto) {
-        const {id, title, userId, jwtToken}= updateData;
+        const { id, title, userId, jwtToken } = updateData;
         await isAuthorized(userId, jwtToken);
 
-        const checkJobTitle= await this.jobTitleRepository.findById(id);
-        if(!checkJobTitle){
-            throw new BadRequestError('Job title does not exist');
-        }
+        try {
+            const checkJobTitle = await this.jobTitleRepository.findById(id);
+            if (!checkJobTitle) {
+                throw new BadRequestError('Job title does not exist');
+            }
 
-        return await this.jobTitleRepository.updateById(id, {
-            title: title,
-        });
+            return await this.jobTitleRepository.updateById(id, { title });
+        } catch (error) {
+            logger.error(error);
+            throw new InternalServerError('Error updating job title');
+        }
     }
 
     async createJobTitleService(createData: CreateJobTitleDto) {
-        const {title, userId, jwtToken}= createData;
+        const { title, userId, jwtToken } = createData;
         await isAuthorized(userId, jwtToken);
 
-        const checkJobTitle= await this.jobTitleRepository.findByTitle(title);
-        if(checkJobTitle){
-            throw new BadRequestError('Job title already exist');
-        }
+        try {
+            const checkJobTitle = await this.jobTitleRepository.findByTitle(title);
+            if (checkJobTitle) {
+                throw new BadRequestError('Job title already exists');
+            }
 
-        return await this.jobTitleRepository.create({ title });
+            return await this.jobTitleRepository.create({ title });
+        } catch (error) {
+            logger.error(error);
+            throw new InternalServerError('Error creating job title');
+        }
     }
 }
 

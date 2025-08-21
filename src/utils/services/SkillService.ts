@@ -3,6 +3,7 @@ import axios from 'axios';
 import logger from '../../configs/logger.config';
 import { microServiceConfig } from '../../configs/server.config';
 import { GetSkillResponse } from '../../types/GetSkillTypes';
+import { InternalServerError } from '../errors/app.error';
 
 export async function getSkillById(id: number, jwtToken: string){
     let skillName;
@@ -17,6 +18,6 @@ export async function getSkillById(id: number, jwtToken: string){
         return skillName;
     }catch(error){
         logger.error(error);
-        throw error;
+        throw new InternalServerError('Error fetching skill details');
     }
 }

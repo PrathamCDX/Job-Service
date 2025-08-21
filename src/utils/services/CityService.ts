@@ -3,6 +3,7 @@ import axios from 'axios';
 import logger from '../../configs/logger.config';
 import { microServiceConfig } from '../../configs/server.config';
 import { GetCityResponse } from '../../types/GetCityTypes';
+import { InternalServerError } from '../errors/app.error';
 
 export async function getCityById(id: number, jwtToken: string){
     let cityName;
@@ -17,6 +18,6 @@ export async function getCityById(id: number, jwtToken: string){
         return cityName;
     }catch(error){
         logger.error(error);
-        throw error;
+        throw new InternalServerError('Error fetching city details');
     }
 }

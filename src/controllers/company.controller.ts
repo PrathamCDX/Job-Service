@@ -11,7 +11,6 @@ const companyService = new CompanyService(companyRepository);
 
 async function uploadLogoHandler(req: Request, res: Response, next: NextFunction){
     try {
-        console.log(req.file);
         if(!req.file){
             throw new BadRequestError('No profile pic');
         }

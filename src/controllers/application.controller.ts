@@ -18,7 +18,6 @@ async function createApplication(req: AuthRequest, res: Response, next: NextFunc
         const jwtToken= String(req.headers.authorization);
 
         const record= await applicationService.getApplicationDetailsService({userId, jobId, jwtToken});
-        console.log('create record', record);
         if(record.length> 0){
             throw new BadRequestError('Already applied for this job');
         }
@@ -102,13 +101,9 @@ async function getApplicationDetails(req: AuthRequest, res: Response, next: Next
             error: {}
         });
     } catch (error) {
-        console.log(error);
         next(error);
     }
 }
-
-
-
 
 export default {
     createApplication,

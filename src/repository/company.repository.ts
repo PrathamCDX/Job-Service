@@ -27,7 +27,6 @@ class CompanyRepository extends BaseRepository<Company>{
                 }
             }
         });
-        console.log('object', name);
         return results ;
     }
 }

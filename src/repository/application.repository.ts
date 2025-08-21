@@ -37,7 +37,6 @@ class ApplicationRepository extends BaseRepository<Application> {
                 },
             },
         });
-        console.log(where);
         if (!record) {
             throw new BadRequestError('Application does not exist');
         }
