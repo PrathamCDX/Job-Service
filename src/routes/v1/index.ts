@@ -16,7 +16,7 @@ v1Router.use('/job-title', jobTitleRouter);
 
 v1Router.use('/experience-level', experienceLevelRouter);
 
-v1Router.use('/job', jobRouter);
+v1Router.use('/jobs', jobRouter);
 
 v1Router.use('/employment-types', employmentTypeRouter);
 

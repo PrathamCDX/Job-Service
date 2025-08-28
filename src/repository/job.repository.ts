@@ -63,6 +63,43 @@ class JobRepository extends BaseRepository<Job> {
         return record;
     }
 
+    async findAndCountAll({
+        limit,
+        offset,
+    }: {
+    limit: number;
+    offset: number;
+  }) {
+        const records = await this.model.findAndCountAll({
+            attributes: [
+                'created_at',
+                'is_remote',
+                'city_id',
+                'id',
+                'salary_min',
+                'salary_max',
+                'apply_link',
+            ],
+            include: [
+                {
+                    association: Job.associations.jobTitle,
+                    attributes: ['title'],
+                },
+                {
+                    association: Job.associations.companyId,
+                    attributes: ['name', 'logo'],
+                },
+            ],
+            where: {
+                deleted_at: { [Op.eq]: null },
+            },
+            order: [['created_at', 'DESC']],
+            limit,
+            offset,
+        });
+        return records;
+    }
+
     async findAll(): Promise<Job[]> {
         const records = await this.model.findAll({
             attributes: [
@@ -86,16 +123,24 @@ class JobRepository extends BaseRepository<Job> {
             ],
             where: {
                 deleted_at: {
-                    [Op.eq]: null, 
+                    [Op.eq]: null,
                 },
             },
+            order: [['created_at', 'DESC']],
         });
         return records;
     }
 
     async getJobDetails(id: number) {
         const response = await this.model.findByPk(id, {
-            attributes: ['salary_min', 'salary_max', 'is_remote', 'apply_link', 'created_at', 'description'],
+            attributes: [
+                'salary_min',
+                'salary_max',
+                'is_remote',
+                'apply_link',
+                'created_at',
+                'description',
+            ],
             include: [
                 {
                     association: Job.associations.jobTitle,
