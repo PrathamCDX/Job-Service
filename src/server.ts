@@ -22,6 +22,13 @@ app.use(attachCorrelationIdMiddleware);
 
 app.use('/api', apiRouter);
 
+app.get('/health', (_req, res) => {
+    res.status(200).json({
+        success: true,
+        message: 'Server is healthy'
+    });
+});
+
 app.use(appErrorHandler);
 app.use(genericErrorHandler);
 
