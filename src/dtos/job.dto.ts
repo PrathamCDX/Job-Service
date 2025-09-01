@@ -62,3 +62,10 @@ export type UpdateJobDto= {
     apply_link?: string;
     skillIds: number[];
 }
+
+export type GetAllJobsPagination= {
+    userId: number;
+    jwtToken: string;
+    page: number;
+    limit: number;
+}

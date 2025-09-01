@@ -44,5 +44,5 @@ export const UpdateJobSchema = z.object({
     company_id: z.number().optional(),
     city_id: z.number().optional(),
     is_remote: z.boolean().optional(),
-    apply_link: z.string().url('Apply link must be a valid URL').optional(),
+    apply_link: z.string().optional(),
 });

@@ -9,7 +9,7 @@ export async function getLocationById(id: number){
     let location;
     try{
         location = await axios.get<GetLocationResponse>(
-            `${microServiceConfig.USER_SERVICE_URL}location/${id}`
+            `${microServiceConfig.USER_SERVICE_URL}locations/${id}`
         );
         return location;
     }catch(error){

@@ -131,11 +131,30 @@ async function updateJob(req: AuthRequest, res: Response, next: NextFunction){
 
 }
 
+async function getAllJobsPagination(req: AuthRequest, res: Response, next: NextFunction){
+    try {
+        const jwtToken = String( req.headers.authorization );
+        const userId = Number( req.user?.id );
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = parseInt(req.query.limit as string) || 10;
+        const response = await jobService.getAllJobsServicePagination({jwtToken, limit: Number(limit), page: Number(page), userId});
+        res.status(StatusCodes.OK).json({
+            success: true,
+            message: 'Paginated Jobs fetched successfully',
+            data: response ,
+            error: {}
+        });
+    } catch (error) {
+        next(error);
+    }
+}
+
 export default {
     
     createJob,
     deleteJob,
     updateJob,
     getAllJobs,
-    getJobDetailsById
+    getJobDetailsById,
+    getAllJobsPagination
 };
