@@ -76,8 +76,7 @@ class JobService {
             const offset = (page - 1) * limit;
 
             const { rows: jobs, count: totalCount } =
-        await this.jobRepository.findAndCountAll({ limit, offset });
-
+                await this.jobRepository.findAndCountAll({ limit, offset });
             const response = await Promise.all(
                 jobs.map(async (job) => {
                     const location = await getLocationById(job.city_id);
@@ -87,7 +86,7 @@ class JobService {
 
                     if (skillIds.length === 0) {
                         return {
-                            ...job.toJSON(),
+                            ...job.get({ plain: true }),
                             city: location.data.data.name,
                             state: location.data.data.state.name,
                             country: location.data.data.state.country.name,
@@ -102,7 +101,7 @@ class JobService {
                     );
 
                     return {
-                        ...job.toJSON(),
+                        ...job.get({ plain: true }),
                         city: location.data.data.name,
                         state: location.data.data.state.name,
                         country: location.data.data.state.country.name,
@@ -110,7 +109,6 @@ class JobService {
                     };
                 })
             );
-
             const totalPages = Math.ceil(totalCount / limit);
 
             return {
