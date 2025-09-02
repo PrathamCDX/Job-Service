@@ -1,11 +1,13 @@
 import {
     CreationOptional,
     DataTypes,
+    ForeignKey,
     InferAttributes,
     InferCreationAttributes,
     Model
 } from 'sequelize';
 
+import CompanySize from './companySize.model';
 import sequelize from './sequelize';
 
 class Company extends Model<InferAttributes<Company>,InferCreationAttributes<Company>> {
@@ -14,6 +16,7 @@ class Company extends Model<InferAttributes<Company>,InferCreationAttributes<Com
     declare logo: string;
     declare website: CreationOptional<string>;
     declare description: CreationOptional<string>;
+    declare company_size_id: ForeignKey<CompanySize['id']>;
     declare created_at: CreationOptional<Date>;
     declare updated_at: CreationOptional<Date>;
     declare deleted_at: CreationOptional<Date | null>;
@@ -42,6 +45,10 @@ Company.init(
         },
         description:{
             type: DataTypes.TEXT,
+            allowNull: true
+        },
+        company_size_id:{
+            type: DataTypes.NUMBER,
             allowNull: true
         },
         created_at: {

@@ -5,6 +5,7 @@ export type CreateCompanyDto= {
     logo: string;
     website?: string;
     description?: string;
+    company_size_id?: number;
 }
 
 

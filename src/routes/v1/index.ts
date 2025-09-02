@@ -2,6 +2,7 @@ import express from 'express';
 
 import applicationRouter from './application.route';
 import comapanyRouter from './company.route';
+import companySizeRouter from './companySize.route';
 import employmentTypeRouter from './employmentType.route';
 import experienceLevelRouter from './experienceLevel.route';
 import jobRouter from './job.route';
@@ -23,5 +24,8 @@ v1Router.use('/employment-types', employmentTypeRouter);
 v1Router.use('/companies', comapanyRouter);
 
 v1Router.use('/applications', applicationRouter);
+
+v1Router.use('/company-sizes', companySizeRouter);
+
 
 export default v1Router;
