@@ -2,7 +2,7 @@ import { InferCreationAttributes, Optional, Transaction, WhereOptions } from 'se
 import { NullishPropertiesOf } from 'sequelize/types/utils';
 
 import CompanyCity from '../db/models/companyCity.model';
-import { NotFoundError } from '../utils/errors/app.error';
+// import { NotFoundError } from '../utils/errors/app.error';
 import BaseRepository from './base.repository';
 
 class CompanyCityRepository extends BaseRepository<CompanyCity>{
@@ -20,15 +20,15 @@ class CompanyCityRepository extends BaseRepository<CompanyCity>{
     }
 
     async delete(whereOptions: WhereOptions<CompanyCity>, transaction?: Transaction): Promise<void> {
-        const record = await this.model.destroy({
+        await this.model.destroy({
             where: {
                 ...whereOptions
             }, transaction
         });
         
-        if(!record) {
-            throw new NotFoundError(`Record not found for deletion with options: ${JSON.stringify(whereOptions)}`);
-        }
+        // if(!record) {
+        //     throw new NotFoundError(`Record not found for deletion with options: ${JSON.stringify(whereOptions)}`);
+        // }
         
         return;
     }

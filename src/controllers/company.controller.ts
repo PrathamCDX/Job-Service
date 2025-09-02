@@ -47,7 +47,7 @@ async function getCompanyDetailsById(req: Request, res: Response, next: NextFunc
 
 async function createComapany(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-        const {name, website, logo, description, cityId} = req.body; 
+        const {name, website, logo, description, cityId, company_size_id} = req.body; 
         const userId = Number( req.user?.id );
         const jwtToken = String(req.headers.authorization);
 
@@ -58,7 +58,8 @@ async function createComapany(req: AuthRequest, res: Response, next: NextFunctio
             userId,
             jwtToken,
             city_id: Number(cityId),
-            description
+            description,
+            company_size_id: Number(company_size_id),
         };
 
         const response = await companyService.createCompany(createData);
