@@ -32,7 +32,7 @@ export type CreateJobDto= {
     experience_level_id: number;
     salary_min: number;
     salary_max: number;
-    recuiter_id: number;
+    recruiter_id: number;
     company_id: number;
     city_id: number;
     is_remote: boolean;

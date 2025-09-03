@@ -55,4 +55,5 @@ export const createCompanySchema = z.object({
         .optional(),
     description: z.string({}).optional(),
     company_size_id: z.number().optional() ,
+    industry_id: z.number().optional(),
 });

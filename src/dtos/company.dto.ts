@@ -6,6 +6,7 @@ export type CreateCompanyDto= {
     website?: string;
     description?: string;
     company_size_id?: number;
+    industry_id?:number;
 }
 
 

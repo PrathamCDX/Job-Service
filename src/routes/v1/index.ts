@@ -5,6 +5,7 @@ import comapanyRouter from './company.route';
 import companySizeRouter from './companySize.route';
 import employmentTypeRouter from './employmentType.route';
 import experienceLevelRouter from './experienceLevel.route';
+import industryRouter from './industry.route';
 import jobRouter from './job.route';
 import jobTitleRouter from './jobTitle.route';
 import pingRouter from './ping.route';
@@ -27,5 +28,6 @@ v1Router.use('/applications', applicationRouter);
 
 v1Router.use('/company-sizes', companySizeRouter);
 
+v1Router.use('/industries', industryRouter);
 
 export default v1Router;

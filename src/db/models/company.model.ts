@@ -8,6 +8,7 @@ import {
 } from 'sequelize';
 
 import CompanySize from './companySize.model';
+import Industry from './industry.model';
 import sequelize from './sequelize';
 
 class Company extends Model<InferAttributes<Company>,InferCreationAttributes<Company>> {
@@ -17,6 +18,7 @@ class Company extends Model<InferAttributes<Company>,InferCreationAttributes<Com
     declare website: CreationOptional<string>;
     declare description: CreationOptional<string>;
     declare company_size_id: ForeignKey<CompanySize['id']>;
+    declare industry_id: ForeignKey<Industry['id']>;
     declare created_at: CreationOptional<Date>;
     declare updated_at: CreationOptional<Date>;
     declare deleted_at: CreationOptional<Date | null>;
@@ -48,6 +50,10 @@ Company.init(
             allowNull: true
         },
         company_size_id:{
+            type: DataTypes.NUMBER,
+            allowNull: true
+        },
+        industry_id:{
             type: DataTypes.NUMBER,
             allowNull: true
         },
