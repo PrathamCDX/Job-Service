@@ -9,7 +9,7 @@ export default {
         const industries = [
             'Information Technology & Services',
             'Software Development',
-            'Internet / E-Commerce',
+            'E-Commerce',
             'Telecommunications',
             'Financial Services',
             'Banking',
@@ -20,7 +20,7 @@ export default {
             'Education & Training',
             'E-Learning / EdTech',
             'Government & Public Sector',
-            'Non-Profit / NGO',
+            'NGO',
             'Consulting & Professional Services',
             'Legal Services',
             'Real Estate & Property',
@@ -42,7 +42,7 @@ export default {
             'Agriculture',
             'Textiles & Apparel',
             'Design / Creative Services',
-            'Human Resources / Staffing',
+            'Human Resources',
             'Research & Development',
             'Music',
         ];
