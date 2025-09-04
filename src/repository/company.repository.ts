@@ -15,6 +15,7 @@ class CompanyRepository extends BaseRepository<Company>{
     }
 
     async create(data: Optional<InferCreationAttributes<Company, { omit: never; }>, NullishPropertiesOf<InferCreationAttributes<Company, { omit: never; }>>>, transaction?:Transaction): Promise<Company> {
+        console.log('data', data);
         const record = await this.model.create(data, {transaction});
         return record;
     }

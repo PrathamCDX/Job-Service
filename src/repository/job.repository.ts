@@ -59,6 +59,7 @@ class JobRepository extends BaseRepository<Job> {
     >,
         transaction?: Transaction
     ): Promise<Job> {
+        console.log('rep', data);
         const record = await this.model.create(data, { transaction: transaction });
         return record;
     }
