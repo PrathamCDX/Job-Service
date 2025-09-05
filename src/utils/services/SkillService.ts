@@ -5,15 +5,11 @@ import { microServiceConfig } from '../../configs/server.config';
 import { GetSkillResponse } from '../../types/GetSkillTypes';
 import { InternalServerError } from '../errors/app.error';
 
-export async function getSkillById(id: number, jwtToken: string){
+export async function getSkillById(id: number){
     let skillName;
     try{
         skillName = await axios.get<GetSkillResponse>(
-            `${microServiceConfig.USER_SERVICE_URL}skills/${id}`,{
-                headers:{
-                    Authorization: jwtToken
-                }
-            }
+            `${microServiceConfig.USER_SERVICE_URL}skills/${id}`
         );
         return skillName;
     }catch(error){

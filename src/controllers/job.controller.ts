@@ -15,13 +15,9 @@ const jobService= new JobService(jobRepository, jobSkillRepository, companyCityR
 async function getJobDetailsById(req: AuthRequest, res: Response, next: NextFunction){
     try {
         const id= Number(req.params.id) ;
-        const userId = Number( req.user?.id );
-        const jwtToken = String(req.headers.authorization);
 
         const getJobDetailsData= {
-            id,
-            userId,
-            jwtToken
+            id
         };
 
         const response = await jobService.getJobDetailsById(getJobDetailsData);
