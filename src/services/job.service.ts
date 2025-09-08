@@ -37,7 +37,7 @@ class JobService {
     }
 
     async getJobDetailsById(getJobDetails: GetJobDetailsDto) {
-        const { jwtToken, id } = getJobDetails;
+        const { id } = getJobDetails;
 
         try {
             const checkJob = await this.jobRepository.findById(id);
@@ -45,13 +45,13 @@ class JobService {
                 throw new NotFoundError('Job not found');
             }
 
-            const city = await getCityById(checkJob.city_id, jwtToken);
+            const city = await getCityById(checkJob.city_id);
             const data = await this.jobRepository.getJobDetails(Number(id));
             const skillIds = await this.jobSkillRepository.findSkillByJobId(id);
 
             const skills = await Promise.all(
                 skillIds.map(async (skillId) => {
-                    const skill = await getSkillById(skillId.skill_id, jwtToken);
+                    const skill = await getSkillById(skillId.skill_id);
                     return { id: skillId.skill_id, name: skill.data.data.name };
                 })
             );
@@ -70,7 +70,7 @@ class JobService {
     }
 
     async getAllJobsServicePagination(getAllJobData: GetAllJobsPagination) {
-        const { jwtToken, page = 1, limit = 10 } = getAllJobData;
+        const { page = 1, limit = 10 } = getAllJobData;
         try {
             // return true ;
             const offset = (page - 1) * limit;
@@ -95,7 +95,7 @@ class JobService {
 
                     const skills = await Promise.all(
                         skillIds.map(async (skillId) => {
-                            const skill = await getSkillById(skillId.skill_id, jwtToken);
+                            const skill = await getSkillById(skillId.skill_id);
                             return skill.data.data.name;
                         })
                     );
@@ -127,7 +127,7 @@ class JobService {
     }
 
     async getAllJobsService(getAllJobData: GetAllJobDto) {
-        const { jwtToken } = getAllJobData;
+        const {  } = getAllJobData;
         try {
             const record = await this.jobRepository.findAll();
             const response = await Promise.all(
@@ -148,7 +148,7 @@ class JobService {
 
                     const skills = await Promise.all(
                         skillIds.map(async (skillId) => {
-                            const skill = await getSkillById(skillId.skill_id, jwtToken);
+                            const skill = await getSkillById(skillId.skill_id);
                             return skill.data.data.name;
                         })
                     );
@@ -175,7 +175,6 @@ class JobService {
         await isAuthorized(userId, jwtToken);
         const transaction = await sequelize.transaction();
         try {
-            console.log(rest);
             const jobRecord = await this.jobRepository.create(
                 { ...rest },
                 transaction

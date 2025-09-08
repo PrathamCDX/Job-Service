@@ -7,10 +7,10 @@ import { CreateJobSchema, DeleteJobSchema, UpdateJobSchema } from '../../validat
 
 const jobRouter = Router();
 
-jobRouter.get('/id/:id', authenticationMiddleware, jobController.getJobDetailsById);
-jobRouter.get('/', authenticationMiddleware, jobController.getAllJobs );
+jobRouter.get('/id/:id', jobController.getJobDetailsById);
+jobRouter.get('/', jobController.getAllJobs );
 // jobRouter.get('/pages', authenticationMiddleware, jobController.getAllJobsPagination);
-jobRouter.get('/pages', authenticationMiddleware, jobController.getAllJobsPagination);
+jobRouter.get('/pages', jobController.getAllJobsPagination);
 jobRouter.post('/', authenticationMiddleware, validateRequestBody(CreateJobSchema), jobController.createJob);
 jobRouter.delete('/', authenticationMiddleware, validateRequestBody(DeleteJobSchema) ,jobController.deleteJob);
 jobRouter.put('/', authenticationMiddleware, validateRequestBody(UpdateJobSchema) ,jobController.updateJob);

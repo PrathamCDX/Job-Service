@@ -1,6 +1,4 @@
 export type GetJobDetailsDto= {
-    userId: number;
-    jwtToken: string;
     id: number;
 }
 
