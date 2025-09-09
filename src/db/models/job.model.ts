@@ -29,8 +29,7 @@ class Job extends Model<InferAttributes<Job>, InferCreationAttributes<Job>>{
         jobTitle: Association<Job, JobTitle> ;
         employmentType: Association<Job, EmploymentType>;
         experienceLevel: Association<Job, ExperienceLevel>
-        companyId: Association<Job, Company>;
-
+        company: Association<Job, Company>;
     };
 
 }

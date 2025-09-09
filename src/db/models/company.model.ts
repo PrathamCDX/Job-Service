@@ -1,4 +1,5 @@
 import {
+    Association,
     CreationOptional,
     DataTypes,
     ForeignKey,
@@ -22,6 +23,11 @@ class Company extends Model<InferAttributes<Company>,InferCreationAttributes<Com
     declare created_at: CreationOptional<Date>;
     declare updated_at: CreationOptional<Date>;
     declare deleted_at: CreationOptional<Date | null>;
+
+    static associations: {
+        companySize: Association<Company, CompanySize>;
+        industry: Association<Company, Industry>;
+    };
 }
 
 Company.init(
