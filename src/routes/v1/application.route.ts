@@ -10,7 +10,7 @@ const applicationRouter= Router();
 applicationRouter.post('/', authenticationMiddleware, validateRequestBody(createApplicationSchema), applicationController.createApplication );
 applicationRouter.delete('/:id', authenticationMiddleware, applicationController.deleteApplication);
 applicationRouter.get('/', authenticationMiddleware, applicationController.getAllApplication);
-applicationRouter.get('/:jobId', authenticationMiddleware, applicationController.getApplicationDetails);
+applicationRouter.get('/job-id/:jobId', authenticationMiddleware, applicationController.getApplicationDetails);
 applicationRouter.get('/user/', authenticationMiddleware, applicationController.getApplicationByUserId);
 
 export default applicationRouter ;

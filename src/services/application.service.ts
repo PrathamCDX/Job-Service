@@ -18,6 +18,7 @@ class ApplicationService {
         
             const record = await this.applicationRepository.findOne({candidate_id: userId, job_id: jobId});
             if(record){
+                return record ;
                 throw new BadRequestError('Application already exists');
             }
 
