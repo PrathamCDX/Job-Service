@@ -4,7 +4,6 @@ import { StatusCodes } from 'http-status-codes';
 import ApplicationRepository from '../repository/application.repository';
 import ApplicationService from '../services/application.service';
 import { AuthRequest } from '../types/AuthRequest';
-import { BadRequestError } from '../utils/errors/app.error';
 import { isAuthorized } from '../utils/services/AuthorizationService';
 // import { isAuthorized } from '../utils/services/AuthorizationService';
 
@@ -17,10 +16,15 @@ async function createApplication(req: AuthRequest, res: Response, next: NextFunc
         const { jobId } = req.body;
         const jwtToken= String(req.headers.authorization);
 
-        const record= await applicationService.getApplicationDetailsService({userId, jobId, jwtToken});
-        if(record.length> 0){
-            throw new BadRequestError('Already applied for this job');
-        }
+        // const record= await applicationService.getApplicationDetailsService({userId, jobId, jwtToken});
+        // if(record.length> 0){
+        //     res.status(StatusCodes.OK).json({
+        //         success: true,
+        //         message: 'Already applied for this Job',
+        //         data: record,
+        //         error: {}
+        //     });
+        // }
         
         const response= await applicationService.createApplicationService({userId, jobId: Number(jobId), jwtToken});
         res.status(StatusCodes.OK).json({
