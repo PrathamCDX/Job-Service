@@ -1,7 +1,9 @@
 import Application from './application.model';
 import Company from './company.model';
+import CompanySize from './companySize.model';
 import EmploymentType from './employmentType.model';
 import ExperienceLevel from './experienceLevel.model';
+import Industry from './industry.model';
 import Job from './job.model';
 import JobTitle from './jobTitle.model';
 
@@ -44,7 +46,7 @@ Job.belongsTo(ExperienceLevel, {
 Job.belongsTo(Company, {
     foreignKey: 'company_id',
     onDelete: 'CASCADE', 
-    as: 'companyId'
+    as: 'company'
 });
 
 Job.hasMany(Application, {
@@ -57,4 +59,28 @@ Application.belongsTo(Job, {
     foreignKey: 'job_id',
     onDelete: 'CASCADE',
     as: 'job'
+});
+
+Company.belongsTo(Industry, {
+    foreignKey: 'industry_id',
+    onDelete: 'CASCADE',
+    as: 'industry'
+});
+
+Industry.hasMany(Company, {
+    foreignKey: 'industry_id',
+    onDelete: 'CASCADE',
+    as: 'company'
+});
+
+Company.belongsTo(CompanySize, {
+    foreignKey: 'company_size_id',
+    onDelete: 'CASCADE',
+    as: 'companySize'
+});
+
+CompanySize.hasMany(Company, {
+    foreignKey: 'company_size_id',
+    onDelete: 'CASCADE',
+    as: 'company'
 });

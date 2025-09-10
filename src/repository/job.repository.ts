@@ -7,6 +7,7 @@ import {
 } from 'sequelize';
 import { NullishPropertiesOf } from 'sequelize/types/utils';
 
+import Company from '../db/models/company.model';
 import Job from '../db/models/job.model';
 import { NotFoundError } from '../utils/errors/app.error';
 import BaseRepository from './base.repository';
@@ -86,7 +87,7 @@ class JobRepository extends BaseRepository<Job> {
                     attributes: ['title'],
                 },
                 {
-                    association: Job.associations.companyId,
+                    association: Job.associations.company,
                     attributes: ['name', 'logo'],
                 },
             ],
@@ -117,7 +118,7 @@ class JobRepository extends BaseRepository<Job> {
                     attributes: ['title'],
                 },
                 {
-                    association: Job.associations.companyId,
+                    association: Job.associations.company,
                     attributes: ['name', 'logo'],
                 },
             ],
@@ -151,8 +152,18 @@ class JobRepository extends BaseRepository<Job> {
                     attributes: ['name'],
                 },
                 {
-                    association: Job.associations.companyId,
-                    attributes: ['name', 'logo'],
+                    association: Job.associations.company,
+                    attributes: ['name', 'logo', 'description'],
+                    include: [
+                        {
+                            association: Company.associations.companySize,
+                            attributes: ['min_employees', 'max_employees'],
+                        },
+                        {
+                            association: Company.associations.industry,
+                            attributes: ['name'],
+                        }
+                    ]
                 },
                 {
                     association: Job.associations.experienceLevel,
