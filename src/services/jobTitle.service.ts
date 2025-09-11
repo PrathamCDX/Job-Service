@@ -76,6 +76,9 @@ class JobTitleService {
             return await this.jobTitleRepository.create({ title });
         } catch (error) {
             logger.error(error);
+            if(error instanceof BadRequestError){
+                throw error ;
+            }
             throw new InternalServerError('Error creating job title');
         }
     }
