@@ -90,6 +90,10 @@ class JobRepository extends BaseRepository<Job> {
                     association: Job.associations.company,
                     attributes: ['name', 'logo'],
                 },
+                {
+                    association: Job.associations.employmentType,
+                    attributes: ['name'],
+                }
             ],
             where: {
                 deleted_at: { [Op.eq]: null },
