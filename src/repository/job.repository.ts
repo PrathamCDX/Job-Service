@@ -171,7 +171,7 @@ class JobRepository extends BaseRepository<Job> {
                 },
                 {
                     association: Job.associations.experienceLevel,
-                    attributes: ['name'],
+                    attributes: ['name', 'min_years', 'max_years'],
                 },
             ],
         });
