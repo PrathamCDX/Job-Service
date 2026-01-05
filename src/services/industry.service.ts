@@ -15,7 +15,7 @@ class IndustryService {
             // await isAuthorized(data.userId, data.jwtToken);
             const { userId, jwtToken } = data ;
 
-            await isAuthorizedGeneric({ userId, jwtToken, allowedRoles: ['operations_admin'] });            
+            await isAuthorizedGeneric({ userId, jwtToken, allowedRoles: ['operations_admin' , 'admin'] });            
             const response = await this.industryRepository.findAllByName(data.name);
             return response ;
         } catch (error) {
