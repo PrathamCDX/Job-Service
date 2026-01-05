@@ -14,7 +14,7 @@ class CompanySizeService {
         try {
             const { jwtToken, userId } = getData ;
             // await isAuthorized( userId, jwtToken );
-            await isAuthorizedGeneric({ userId, jwtToken, allowedRoles: ['operations_admin'] });
+            await isAuthorizedGeneric({ userId, jwtToken, allowedRoles: ['operations_admin','admin' ] });
 
             const response = await this.companySizeRepository.findAll();
             return response ;
